@@ -1,0 +1,272 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Patchedconics</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-27"><meta name="DC.source" content="Patchedconics.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">loading up constants and unit conversion factors.</a></li><li><a href="#3">Initial Parameteres.</a></li><li><a href="#4">choose the planets for the patched conics.</a></li><li><a href="#6">Choose whether to perform a prograde or retrograde trajectory.</a></li><li><a href="#8">Get State Vectors:</a></li><li><a href="#9">Solve Lambert's</a></li><li><a href="#10">vector for V1, V2, V hyperbolic depart and arrival.</a></li><li><a href="#11">delta Vs.</a></li><li><a href="#12">Eccetricity of the hyperbola</a></li><li><a href="#13">Display results of patched conics</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
+clc
+<span class="comment">%.............PATCHED CONICS SOLUTION FOR INTERPLANETARY TRANSFERS.....</span>
+<span class="comment">% Made by Sebastian Rodriguez Rosero, McGill Interstellar Flight Research group,</span>
+<span class="comment">% Fall 2020.</span>
+<span class="comment">%Last updated on 12/22/2020</span>
+
+<span class="comment">%   Work in progress, algorithm expanded to all the planets in the solar</span>
+<span class="comment">%   system.</span>
+
+<span class="comment">%!12/22/2020 As far as right now the code presents no error but the values</span>
+<span class="comment">%Earth to Mars transfers seem to work fine but other planets need validation.</span>
+
+<span class="comment">%ALGORITHMS MAINLY FROM ORBITAL MECHANICS FOR ENGINEERING STUDENTS BY CURTIS.</span>
+<span class="comment">%  Curtis, H. D. (2005). Chapter 3, 4, 5, 8. In Orbital mechanics for</span>
+<span class="comment">% engineering students (pp. 107-398). Amsterdam: Butterworth-Heinemann.</span>
+<span class="comment">% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %</span>
+
+<span class="comment">% All CALCULATIONS HAVE BEEN DONE IN S.I UNITS</span>
+<span class="comment">%THESE ARE CONVERTED INTO THE MOST CONVENIENT UNIT</span>
+<span class="comment">%ONCE THE RESULTS ARE DISPLAYED.</span>
+
+<span class="comment">%NOTE: for simplicity, the sufix E refers to planet 1 and M to planet 2 respectively.</span>
+</pre><h2 id="2">loading up constants and unit conversion factors.</h2><pre class="codeinput">[units,constant]=unitsandconstants();
+</pre><h2 id="3">Initial Parameteres.</h2><h2 id="4">choose the planets for the patched conics.</h2><pre class="codeinput">[planetdatadeparture,planetdataarrival,planet1,planet2]=chooseplanet();
+<span class="comment">%Input date of Departure</span>
+[date]=choosedates();
+</pre><pre class="codeoutput">                        INTERPLANETARY TRANSFER CALCULATOR 
+=========================================================================
+Please choose from the following planets for the transfer: 
+-Mercury 
+-Venus 
+-Earth 
+-Mars 
+-Jupiter 
+-Saturn 
+-Uranus 
+-Neptune 
+-Pluto
+=========================================================================
+
+1) Departure planet: 
+</pre><pre class="codeoutput error">Error using input
+Cannot call INPUT from EVALC.
+
+Error in chooseplanet (line 11)
+             planet1 = input('? ','s');
+
+Error in Patchedconics (line 30)
+[planetdatadeparture,planetdataarrival,planet1,planet2]=chooseplanet();
+</pre><pre class="codeinput"><span class="comment">%Parking orbits around each of the planets, in meters.</span>
+ [rorbitPlanet1, rorbitplanet2, AltitudePlanet1, AltitudePlanet2]=getDAOrbits( units,planetdatadeparture, planetdataarrival);
+</pre><h2 id="6">Choose whether to perform a prograde or retrograde trajectory.</h2><pre class="codeinput">[chooseproretro]=chooseproretro();
+</pre><pre class="codeinput">clc
+fprintf(<span class="string">'                   INTERPLANETARY TRANSFER CALCULATOR \n'</span>)
+fprintf(<span class="string">'=========================================================================\n'</span>);
+fprintf(<span class="string">'                        '</span>);
+fprintf(upper(planet1));
+fprintf(<span class="string">' TO '</span>);
+fprintf(upper(planet2));
+fprintf(<span class="string">'\n'</span>)
+fprintf(<span class="string">'=========================================================================\n'</span>);
+</pre><h2 id="8">Get State Vectors:</h2><pre class="codeinput">[R1,R2,vPlanet1,vPlanet2,TOF]=GetStateVectors(date, constant, units,planetdataarrival,planetdatadeparture);
+</pre><h2 id="9">Solve Lambert's</h2><pre class="codeinput"> string =chooseproretro;
+[v1,v2]=lambert(R1,R2,TOF,string,constant);
+
+<span class="comment">%Parameters of transfer orbit.</span>
+GetOrbitParaTransf(R1,v1, constant,units)
+</pre><h2 id="10">vector for V1, V2, V hyperbolic depart and arrival.</h2><pre class="codeinput">[v1mag,v2mag,vhyperDepartVECTOR, vhyperArrivalVECTOR, vhyperDepart, vhyperArrival]=getHyperVel(v1,v2,vPlanet1, vPlanet2);
+</pre><h2 id="11">delta Vs.</h2><pre class="codeinput">[DeltaVplanet1, DeltaVplanet2, vpMh]=GetDVcircular(vhyperDepart, vhyperArrival, planetdatadeparture, planetdataarrival);
+</pre><h2 id="12">Eccetricity of the hyperbola</h2><pre class="codeinput"> [e, eM]=getEccentricityHyper(planetdatadeparture,planetdataarrival, vhyperDepart, vhyperArrival);
+</pre><h2 id="13">Display results of patched conics</h2><pre class="codeinput">fprintf(<span class="string">'\n-------------------------------------------------\n'</span>)
+fprintf( <span class="string">'LAUNCH AND ARRIVAL CONDITIONS'</span>)
+fprintf(<span class="string">'\n-------------------------------------------------\n'</span>)
+fprintf(<span class="string">' Altitude of initial orbit at periapsis= %.1f\tkm \n Altitude of final orbit at periapsis= %.1f\tkm \n TOF= %.1f\tDays \n'</span>, AltitudePlanet1, AltitudePlanet2, TOF/units.day);
+fprintf(<span class="string">'\n-------------------------------------------------\n'</span>)
+fprintf( <span class="string">' RESULTS '</span>);
+fprintf(<span class="string">'\n-------------------------------------------------\n'</span>)
+fprintf(<span class="string">' V1= %f\tkm/s \n V2= %f\tkm/s \n Hyperbolic excess leaving planet 1 = %f\tkm/s \n Hyperbolic excess arriving to planet 2 = %f\tkm/s \n Delta V at starting orbit in planet 1= %f\tkm/s \n Delta V for circular final orbit around planet 2= %f\tkm/s \n Eccentricity of hyperbola leaving planet 1= %.4f \n Eccentricity of the hyperbola arriving to planet 2= %.4f \n'</span>, v1mag/units.KM, v2mag/units.KM ,vhyperDepart/units.KM, vhyperArrival/units.KM, DeltaVplanet1/units.KM, -DeltaVplanet2/units.KM, e, eM);
+
+
+
+
+<span class="comment">%SECTION AHEAD CURRENTLY UNDER RENOVATIONS.</span>
+
+
+<span class="comment">%Works for some planets.</span>
+<span class="keyword">while</span>(1)
+   fprintf(<span class="string">'would you like to plot this trajectory (y = yes, n = no)\n'</span>);
+   slct2 = input(<span class="string">'? '</span>, <span class="string">'s'</span>);
+   <span class="keyword">if</span> (slct2 == <span class="string">'y'</span> || slct2 == <span class="string">'n'</span>)
+      <span class="keyword">break</span>;
+   <span class="keyword">end</span>
+   fprintf(<span class="string">' \n Oops! \nInvalid input, try again :) \n'</span>);
+
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> slct2 == <span class="string">'y'</span>
+ GetTransferplot(R1, vPlanet1, R2, vPlanet2,v1,constant,units,planet1,planet2,planetdataarrival, planetdatadeparture);
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all
+clc
+%.............PATCHED CONICS SOLUTION FOR INTERPLANETARY TRANSFERS..... 
+% Made by Sebastian Rodriguez Rosero, McGill Interstellar Flight Research group,
+% Fall 2020.
+%Last updated on 12/22/2020
+
+%   Work in progress, algorithm expanded to all the planets in the solar
+%   system. 
+
+%!12/22/2020 As far as right now the code presents no error but the values
+%Earth to Mars transfers seem to work fine but other planets need validation. 
+
+%ALGORITHMS MAINLY FROM ORBITAL MECHANICS FOR ENGINEERING STUDENTS BY CURTIS.
+%  Curtis, H. D. (2005). Chapter 3, 4, 5, 8. In Orbital mechanics for
+% engineering students (pp. 107-398). Amsterdam: Butterworth-Heinemann.
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %  
+
+% All CALCULATIONS HAVE BEEN DONE IN S.I UNITS
+%THESE ARE CONVERTED INTO THE MOST CONVENIENT UNIT
+%ONCE THE RESULTS ARE DISPLAYED. 
+
+%NOTE: for simplicity, the sufix E refers to planet 1 and M to planet 2 respectively.
+
+
+%% loading up constants and unit conversion factors.
+[units,constant]=unitsandconstants();
+%% Initial Parameteres.
+%% choose the planets for the patched conics. 
+[planetdatadeparture,planetdataarrival,planet1,planet2]=chooseplanet();
+%Input date of Departure
+[date]=choosedates();
+%%   
+%Parking orbits around each of the planets, in meters. 
+ [rorbitPlanet1, rorbitplanet2, AltitudePlanet1, AltitudePlanet2]=getDAOrbits( units,planetdatadeparture, planetdataarrival);
+%% Choose whether to perform a prograde or retrograde trajectory.    
+[chooseproretro]=chooseproretro();
+%% 
+clc
+fprintf('                   INTERPLANETARY TRANSFER CALCULATOR \n')
+fprintf('=========================================================================\n');
+fprintf('                        '); 
+fprintf(upper(planet1));
+fprintf(' TO ');
+fprintf(upper(planet2)); 
+fprintf('\n')
+fprintf('=========================================================================\n');
+%% Get State Vectors: 
+[R1,R2,vPlanet1,vPlanet2,TOF]=GetStateVectors(date, constant, units,planetdataarrival,planetdatadeparture);
+%% Solve Lambert's
+ string =chooseproretro;
+[v1,v2]=lambert(R1,R2,TOF,string,constant);
+
+%Parameters of transfer orbit.
+GetOrbitParaTransf(R1,v1, constant,units)
+
+%% vector for V1, V2, V hyperbolic depart and arrival. 
+
+[v1mag,v2mag,vhyperDepartVECTOR, vhyperArrivalVECTOR, vhyperDepart, vhyperArrival]=getHyperVel(v1,v2,vPlanet1, vPlanet2);
+
+%% delta Vs. 
+
+[DeltaVplanet1, DeltaVplanet2, vpMh]=GetDVcircular(vhyperDepart, vhyperArrival, planetdatadeparture, planetdataarrival);
+
+%% Eccetricity of the hyperbola
+
+ [e, eM]=getEccentricityHyper(planetdatadeparture,planetdataarrival, vhyperDepart, vhyperArrival);
+
+%% Display results of patched conics
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf( 'LAUNCH AND ARRIVAL CONDITIONS')
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf(' Altitude of initial orbit at periapsis= %.1f\tkm \n Altitude of final orbit at periapsis= %.1f\tkm \n TOF= %.1f\tDays \n', AltitudePlanet1, AltitudePlanet2, TOF/units.day);   
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf( ' RESULTS ');
+fprintf('\nREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-\n')
+fprintf(' V1= %f\tkm/s \n V2= %f\tkm/s \n Hyperbolic excess leaving planet 1 = %f\tkm/s \n Hyperbolic excess arriving to planet 2 = %f\tkm/s \n Delta V at starting orbit in planet 1= %f\tkm/s \n Delta V for circular final orbit around planet 2= %f\tkm/s \n Eccentricity of hyperbola leaving planet 1= %.4f \n Eccentricity of the hyperbola arriving to planet 2= %.4f \n', v1mag/units.KM, v2mag/units.KM ,vhyperDepart/units.KM, vhyperArrival/units.KM, DeltaVplanet1/units.KM, -DeltaVplanet2/units.KM, e, eM);
+
+
+
+
+%SECTION AHEAD CURRENTLY UNDER RENOVATIONS. 
+
+
+%Works for some planets. 
+while(1)  
+   fprintf('would you like to plot this trajectory (y = yes, n = no)\n');
+   slct2 = input('? ', 's');
+   if (slct2 == 'y' || slct2 == 'n')
+      break;
+   end 
+   fprintf(' \n Oops! \nInvalid input, try again :) \n');
+   
+end
+
+if slct2 == 'y' 
+ GetTransferplot(R1, vPlanet1, R2, vPlanet2,v1,constant,units,planet1,planet2,planetdataarrival, planetdatadeparture);
+end
+
+##### SOURCE END #####
+--></body></html>

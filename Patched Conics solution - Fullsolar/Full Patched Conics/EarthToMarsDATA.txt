@@ -1,0 +1,87 @@
+                   INTERPLANETARY TRANSFER CALCULATOR 
+=========================================================================
+                        EARTH TO MARS
+=========================================================================
+------------------------------------------
+ Departure date at : 2020 years, 9 months, 20 days, 0 hours(UT)
+
+ Arrival date at Mars: 2020 years, 11 months, 4 days, 0 hours(UT)
+------------------------------------------
+------------------------------------------ 
+ Orbital Parameters of departure planet orbit 
+------------------------------------------
+ Semimajor axis=1.000000 AU 
+ Eccentricity= 0.016702 
+ Inclination= 359.997349 deg 
+ Right Ascension= 347.690289 deg 
+ Longitude of Perihelion= 5902.390806 deg 
+ Mean longitude= 359.061218 deg
+ Angular Momentum= 4455105153272.969727 km^2/s 
+ Argument of Perihelion= 115.325864 deg 
+ Mean Anomaly= 256.045065 deg 
+ Eccentric Anomaly= 255.120182 deg 
+ True Anomaly= 254.197234 deg 
+
+------------------------------------------
+ Departure Planet State Vectors  
+------------------------------------------
+ R1=(150061861.283575 i, -7304103.448983 j, -1150.284102 k) km 
+ r1= 150239515.908457 km
+
+ V=(0.963466 i, 29.641561 j, -0.001350 k) km/s
+ V(mag)= 29.657216 km/s
+------------------------------------------
+------------------------------------------ 
+ Orbital Parameters of Arrival Planet orbit 
+------------------------------------------
+ Semimajor axis=1.523647 AU 
+ Eccentricity= 0.093437 
+ Inclination= 1.849135 deg 
+ Right Ascension= 49.519477 deg 
+ Longitude of Perihelion= 19258.899123 deg 
+ Mean longitude= 24.654799 deg
+ Angular Momentum= 5475913923558.962891 km^2/s 
+ Argument of Perihelion= 286.611723 deg 
+ Mean Anomaly= 48.523599 deg 
+ Eccentric Anomaly= 52.787138 deg 
+ True Anomaly= 57.182385 deg 
+
+------------------------------------------
+Arrival Planet State Vectors  
+------------------------------------------
+ R2=(179692031.908922 i, 118132517.010373 j, -1936700.567138 k) km
+ r2= 215054106.484507 km
+
+ V=(-12.384943 i, 22.315947 j, 0.771850 k) km/s
+ V(mag)= 25.533979 km/s
+------------------------------------------
+ 
+ Orbital Parameters of transfer orbit  
+------------------------------------------
+
+ Eccentricity= 0.675962 
+ Inclination= 0.874939 deg 
+ Right Ascension= 177.184663 deg 
+ Argument of Periapsis= 121.465343 deg 
+ Angular Momentum= 5193077349.149309 km^2/s 
+ True Anomaly= 58.563385 deg 
+------------------------------------------
+
+-------------------------------------------------
+LAUNCH AND ARRIVAL CONDITIONS
+-------------------------------------------------
+ Altitude of initial orbit at periapsis= 13000.0	km 
+ Altitude of final orbit at periapsis= 100.0	km 
+ TOF= 45.0	Days 
+
+-------------------------------------------------
+ RESULTS 
+-------------------------------------------------
+ V1= 37.576597	km/s 
+ V2= 29.657143	km/s 
+ Hyperbolic excess leaving planet 1 = 15.998301	km/s 
+ Hyperbolic excess arriving to planet 2 = 15.407948	km/s 
+ Delta V at starting orbit in planet 1= 11.612181	km/s 
+ Delta V for circular final orbit around planet 2= 12.654536	km/s 
+ Eccentricity of hyperbola leaving planet 1= 5.0954 
+ Eccentricity of the hyperbola arriving to planet 2= 19.8246 

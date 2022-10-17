@@ -1,0 +1,58 @@
+transfer time                   45.000000  days 
+ 
+heliocentric ecliptic orbital elements of the departure planet
+
+      sma (km)        eccentricity     inclination (deg)    argper (deg)
+ 1.4959802229e+08  1.6699905181e-02  0.0000000000e+00  1.0329363111e+02 
+
+     raan (deg)     true anomaly (deg)   arglat (deg)       period (days)
+ 0.0000000000e+00  2.5421154177e+02  3.5750517288e+02  3.6525745091e+02 
+
+
+heliocentric ecliptic orbital elements of the transfer orbit after the initial delta-v
+
+      sma (km)        eccentricity     inclination (deg)    argper (deg)
+ 3.7279537205e+08  6.7506682855e-01  8.7304074991e-01  1.2128516667e+02 
+
+     raan (deg)     true anomaly (deg)   arglat (deg)       period (days)
+ 1.7750517288e+02  5.8714833327e+01  1.8000000000e+02  1.4368653575e+03 
+
+
+heliocentric ecliptic orbital elements of the transfer orbit prior to the final delta-v
+
+      sma (km)        eccentricity     inclination (deg)    argper (deg)
+ 3.7279537205e+08  6.7506682855e-01  8.7304074991e-01  1.2128516667e+02 
+
+     raan (deg)     true anomaly (deg)   arglat (deg)       period (days)
+ 1.7750517288e+02  9.4797160567e+01  2.1608232724e+02  1.4368653575e+03 
+
+
+heliocentric ecliptic orbital elements of the arrival planet 
+
+      sma (km)        eccentricity     inclination (deg)    argper (deg)
+ 2.2793918413e+08  9.3419474862e-02  1.8496012945e+00  2.8672493361e+02 
+
+     raan (deg)     true anomaly (deg)   arglat (deg)       period (days)
+ 4.9719012339e+01  5.7132415520e+01  3.4385734913e+02  6.8697161038e+02 
+
+
+initial delta-v vector and magnitude
+
+x-component of delta-v      15430.927436  meters/second
+y-component of delta-v       4214.755288  meters/second
+z-component of delta-v       -526.279774  meters/second
+
+delta-v magnitude           16004.832210  meters/second
+
+energy                        256.154654  km^2/sec^2
+
+
+final delta-v vector and magnitude
+
+x-component of delta-v      -13471.171166  meters/second
+y-component of delta-v      -7356.880615  meters/second
+z-component of delta-v       1223.938775  meters/second
+
+delta-v magnitude           15397.862550  meters/second
+
+energy                        237.094171  km^2/sec^2

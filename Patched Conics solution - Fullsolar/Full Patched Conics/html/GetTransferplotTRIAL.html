@@ -1,0 +1,501 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>GetTransferplotTRIAL</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-01-27"><meta name="DC.source" content="GetTransferplotTRIAL.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">plot</a></li><li><a href="#3">This section fixes the plot depending on the chosen planets.</a></li><li><a href="#5">Functions</a></li><li><a href="#8">Solution</a></li><li><a href="#12">Solution</a></li></ul></div><pre class="codeinput"><span class="comment">%this function simulates the orbits of the planets around the sun and it</span>
+<span class="comment">%displays a graph with the transfer orbit betwen Earth and Mars.</span>
+<span class="comment">%Code made by Sebastian Rodriguez Rosero.</span>
+<span class="comment">%Summer 2020.</span>
+<span class="comment">%UPDATED ON: 12/2/2020</span>
+<span class="comment">%THIS NEEDS TO BE UPDATED. CURRENTLY ONLY WORKS FOR EARTH-MARS TRANSFERS.</span>
+<span class="comment">%REASONS WHY:</span>
+    <span class="comment">%  dt is fixed but in order to work for all planets need to change.</span>
+    <span class="comment">%  the N number of iterations should also be able to change depending on which planets are selected.</span>
+    <span class="comment">%  Not exactly sure whether this also works for retrograde orbits.</span>
+    <span class="comment">%  Everything needs further validation against other models out there.</span>
+
+
+    <span class="comment">% Test values for position and velocity of planets.</span>
+    <span class="comment">%%{</span>
+
+planet1=<span class="string">'Earth'</span>; planet2=<span class="string">'Mars'</span>;
+<span class="comment">% loading up constants and unit conversion factors.</span>
+[units,constant]=unitsandconstants();
+<span class="comment">% Initial Parameteres.</span>
+<span class="comment">% choose the planets for the patched conics.</span>
+[planetdatadeparture]=setPlanetDatabase(planet1);
+[planetdataarrival]=setPlanetDatabase(planet2);
+
+<span class="comment">%Earth departure Vector.</span>
+InitialPosE=[1.500618612835749e+11;-7.304103448983006e+09;-1.150284102099482e+06];
+InitialPosE2=[9.144600620735362e+10;-1.212565581477094e+11;4.548784574574002e+06];
+
+<span class="comment">% Mars Arrival Vector.</span>
+InitialPosM=[1.796920319089222e+11;1.181325170103725e+11;-1.936700567138306e+09];
+InitialPosM2=[-9.628144018811493e+08;2.348590452563646e+11;4.946057385219960e+09];
+
+<span class="comment">%Velocity vector.</span>
+InitialVelE=[9.634664282355470e+02;2.964156149999659e+04;-1.349696427441281];
+InitialVelM= [-1.238494328872880e+04;2.231594693723536e+04;7.718498826795501e+02];
+
+<span class="comment">%transfer position vectors.</span>
+TransferPos1=[1.500618612835749e+11;-7.304103448983006e+09;-1.150284102099482e+06];
+TransferPos2=[9.144600620735362e+10;-1.212565581477094e+11;4.548784574574002e+06];
+
+<span class="comment">%Transfer velocity vector.</span>
+TransferVel1=[1.640184610732615e+04;3.380386628373996e+04;-5.279241938816727e+02];
+TransferVel2=[2.672992453413431e+04;1.895687745405791e+04;1.153260133910515e+03];
+
+
+TransferFinalPos1=InitialPosM;
+TransferFinalPos2=InitialPosM2;
+
+
+dt=3600;
+N=1000000;
+</pre><h2 id="2">plot</h2><pre class="codeinput"><span class="comment">%-------------------------------------</span>
+figure (<span class="string">'name'</span>,<span class="string">'Interplanetary transfer'</span>)
+hold <span class="string">on</span>
+axis <span class="string">equal</span>
+grid <span class="string">on</span>
+grid <span class="string">minor</span>
+
+xlabel(<span class="string">'X(AU)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times'</span>);
+ylabel(<span class="string">'Y(AU)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times'</span>);
+zlabel(<span class="string">'Z(AU)'</span>,<span class="string">'FontName'</span>,<span class="string">'Times'</span>);
+</pre><img vspace="5" hspace="5" src="GetTransferplotTRIAL_01.png" alt=""> <h2 id="3">This section fixes the plot depending on the chosen planets.</h2><pre class="codeinput"><span class="keyword">if</span> planetdatadeparture.aAU&gt;planetdataarrival.aAU
+    half=planetdatadeparture.aAU/2;
+    xlim([-planetdatadeparture.aAU-half planetdatadeparture.aAU+half])
+    ylim([-planetdatadeparture.aAU-half planetdatadeparture.aAU+half])
+    zlim([-1 1])
+
+<span class="keyword">elseif</span> planetdataarrival.aAU&gt;planetdatadeparture.aAU
+    half=planetdataarrival.aAU/2;
+    xlim([-planetdataarrival.aAU-half planetdataarrival.aAU+half])
+    ylim([-planetdataarrival.aAU-half planetdataarrival.aAU+half])
+    zlim([-1 1])
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="GetTransferplotTRIAL_02.png" alt=""> <pre class="codeinput">legend(<span class="string">'location'</span>,<span class="string">'northeast'</span>,<span class="string">'FontName'</span>,<span class="string">'Times'</span>)
+<span class="comment">%------------------------------</span>
+<span class="comment">% plot sun</span>
+plot3(0,0,0, <span class="string">'hy'</span>, <span class="string">'MarkerSize'</span>, 10,<span class="string">'DisplayName'</span>,<span class="string">'Sun'</span>);
+planetdotsE=[TransferPos1,TransferPos2];
+planetdotsM=[TransferFinalPos1,TransferFinalPos2];
+
+plot3(planetdotsE(1,:)/units.AU,planetdotsE(2,:)/units.AU,planetdotsE(3,:)/units.AU, <span class="string">'o'</span>,<span class="string">'MarkerSize'</span>, 5,<span class="string">'color'</span>,planetdatadeparture.color,<span class="string">'DisplayName'</span>,planet1)
+
+plot3(planetdotsM(1,:)/units.AU,planetdotsM(2,:)/units.AU,planetdotsM(3,:)/units.AU, <span class="string">'o'</span>,<span class="string">'MarkerSize'</span>, 5,<span class="string">'color'</span>,planetdataarrival.color,<span class="string">'DisplayName'</span>,planet2)
+
+<span class="comment">%Plot planets' orbits</span>
+<span class="comment">%planet1</span>
+[posE]=positiontracer(InitialPosE, InitialVelE, dt, N, constant);
+h1=plot3(posE(:,1)/units.AU,posE(:,2)/units.AU,posE(:,3)/units.AU,<span class="string">'color'</span>,<span class="string">'k'</span>,<span class="string">'linestyle'</span>,<span class="string">'--'</span>);
+<span class="comment">%planet2</span>
+[posM]=positiontracer(InitialPosM, InitialVelM, dt, N, constant);
+h2=plot3(posM(:,1)/units.AU,posM(:,2)/units.AU,posM(:,3)/units.AU,<span class="string">'color'</span>,<span class="string">'k'</span>,<span class="string">'linestyle'</span>,<span class="string">'--'</span>);
+<span class="comment">%plot transfer orbit. Mars 1</span>
+[pos1]=positiontracerTRANS(TransferPos1, TransferVel1,TransferFinalPos1, dt, N, constant);
+plot3(pos1(:,1)/units.AU,pos1(:,2)/units.AU,pos1(:,3)/units.AU,<span class="string">'color'</span>,<span class="string">'r'</span>,<span class="string">'linestyle'</span>,<span class="string">'--'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Mars 1 &amp; 2a'</span>)
+
+ <span class="comment">%Mars 2b</span>
+[pos2]=positiontracerTRANS(TransferPos2, TransferVel2,TransferFinalPos2, dt, N, constant);
+plot3(pos2(:,1)/units.AU,pos2(:,2)/units.AU,pos2(:,3)/units.AU,<span class="string">'-.'</span>,<span class="string">'DisplayName'</span>,<span class="string">'Perseverance (Mars 2020)'</span>)
+
+set(get(get(h1,<span class="string">'Annotation'</span>),<span class="string">'LegendInformation'</span>),<span class="string">'IconDisplayStyle'</span>,<span class="string">'off'</span>);
+set(get(get(h2,<span class="string">'Annotation'</span>),<span class="string">'LegendInformation'</span>),<span class="string">'IconDisplayStyle'</span>,<span class="string">'off'</span>);
+
+<span class="comment">%-------------------------------</span>
+</pre><img vspace="5" hspace="5" src="GetTransferplotTRIAL_03.png" alt=""> <h2 id="5">Functions</h2><pre class="codeinput"><span class="comment">%displays the planetary orbits.</span>
+
+<span class="keyword">function</span> [pos]=positiontracer(InitialPos, InitialVel, dt, N, constant)
+</pre><pre class="codeinput"><span class="comment">%Initial Conditions</span>
+
+rx=InitialPos(1);
+ry=InitialPos(2);
+rz=InitialPos(3);                       <span class="comment">%initial position.</span>
+Vx=InitialVel(1);                       <span class="comment">%Velocity in the x direction. m/s</span>
+Vy=InitialVel(2);                       <span class="comment">%Velocity in the y direction. m/s</span>
+Vz=InitialVel(3);
+
+
+initialPosCheck=[rx ry rz];             <span class="comment">%Saves a copy of the initial position.</span>
+</pre><pre class="codeinput">R = zeros(N,3);
+V = zeros(N,3);
+dvdt = zeros(N,3);
+t=zeros(N,1);
+
+
+Check=false;
+<span class="comment">%Initial Conditions of vectors</span>
+        R(1,:) =[rx ry rz];
+        V(1,:) = [Vx Vy Vz];
+        Sun = [0 0 0];
+</pre><h2 id="8">Solution</h2><pre class="codeinput"><span class="comment">%--------------------------</span>
+
+ <span class="keyword">for</span> i=1:N
+
+        [G_dV] = getGdV(Sun,R(i,:),constant);
+        dvdt(i,:)=G_dV;
+
+  <span class="keyword">if</span> i&lt;N
+      V(i+1,:)= V(i,:)+dvdt(i,:)*dt;
+      R(i+1,:)= R(i,:)+V(i+1,:)*dt;
+      t(i+1)=t(i)+dt;
+  <span class="keyword">end</span>
+
+  <span class="keyword">if</span> Check==true
+      <span class="keyword">if</span> R(i,:)==initialPosCheck
+          R(i:N,:) = [];
+          <span class="keyword">break</span>
+
+      <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+  Check=true;
+ <span class="keyword">end</span>
+ pos=R;
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="comment">%displays the transfer orbits.</span>
+<span class="keyword">function</span> [pos]=positiontracerTRANS(TransferPos, TransferVel,TransferFinalPos, dt, N, constant)
+</pre><pre class="codeinput"><span class="comment">%Initial Conditions</span>
+rx=TransferPos(1);
+ry=TransferPos(2);
+rz=TransferPos(3);            <span class="comment">%initial position.</span>
+Vx=TransferVel(1);          <span class="comment">%Velocity in the x direction. m/s</span>
+Vy=TransferVel(2);            <span class="comment">%Velocity in the y direction. m/s</span>
+Vz=TransferVel(3);
+</pre><pre class="codeinput">R = zeros(N,3);
+V = zeros(N,3);
+dvdt = zeros(N,3);
+t=zeros(N,1);
+<span class="comment">%Initial Conditions of vectors</span>
+        R(1,:) =[rx ry rz];
+        V(1,:) = [Vx Vy Vz];
+        Sun = [0 0 0];
+</pre><h2 id="12">Solution</h2><pre class="codeinput"><span class="comment">%---------------------------</span>
+
+ <span class="keyword">for</span> i=1:N
+
+        [G_dV] = getGdV(Sun,R(i,:),constant);
+        dvdt(i,:)=G_dV;
+
+  <span class="keyword">if</span> i&lt;N
+      V(i+1,:)= V(i,:)+dvdt(i,:)*dt;
+      R(i+1,:)= R(i,:)+V(i+1,:)*dt;
+      t(i+1)=t(i)+dt;
+  <span class="keyword">end</span>
+       h=norm(R(i,:));
+
+       <span class="keyword">if</span> h&gt;norm(TransferFinalPos)
+            R(i:N,:) = [];
+           <span class="keyword">break</span>
+       <span class="keyword">end</span>
+ <span class="keyword">end</span>
+ pos=R;
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+<span class="comment">%Gravitational force due to the sun.</span>
+<span class="keyword">function</span> [G_dV] = getGdV(Planet,Pos,constant)
+
+    ToPlanet = (Planet-Pos);
+    G_unit = ToPlanet./norm(ToPlanet);
+    G_mag = constant.mu_sun/norm(Pos)^2;
+    G_dV = G_mag.*G_unit;
+
+<span class="keyword">end</span>
+
+<span class="comment">%</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%this function simulates the orbits of the planets around the sun and it
+%displays a graph with the transfer orbit betwen Earth and Mars. 
+%Code made by Sebastian Rodriguez Rosero. 
+%Summer 2020. 
+%UPDATED ON: 12/2/2020
+%THIS NEEDS TO BE UPDATED. CURRENTLY ONLY WORKS FOR EARTH-MARS TRANSFERS. 
+%REASONS WHY:
+    %  dt is fixed but in order to work for all planets need to change. 
+    %  the N number of iterations should also be able to change depending on which planets are selected. 
+    %  Not exactly sure whether this also works for retrograde orbits. 
+    %  Everything needs further validation against other models out there.
+    
+    
+    % Test values for position and velocity of planets.
+    %%{
+  
+planet1='Earth'; planet2='Mars';
+% loading up constants and unit conversion factors.
+[units,constant]=unitsandconstants();
+% Initial Parameteres.
+% choose the planets for the patched conics. 
+[planetdatadeparture]=setPlanetDatabase(planet1);
+[planetdataarrival]=setPlanetDatabase(planet2);
+
+%Earth departure Vector.
+InitialPosE=[1.500618612835749e+11;-7.304103448983006e+09;-1.150284102099482e+06];
+InitialPosE2=[9.144600620735362e+10;-1.212565581477094e+11;4.548784574574002e+06];
+
+% Mars Arrival Vector.
+InitialPosM=[1.796920319089222e+11;1.181325170103725e+11;-1.936700567138306e+09];
+InitialPosM2=[-9.628144018811493e+08;2.348590452563646e+11;4.946057385219960e+09];
+
+%Velocity vector.
+InitialVelE=[9.634664282355470e+02;2.964156149999659e+04;-1.349696427441281];
+InitialVelM= [-1.238494328872880e+04;2.231594693723536e+04;7.718498826795501e+02];
+
+%transfer position vectors. 
+TransferPos1=[1.500618612835749e+11;-7.304103448983006e+09;-1.150284102099482e+06];
+TransferPos2=[9.144600620735362e+10;-1.212565581477094e+11;4.548784574574002e+06];
+
+%Transfer velocity vector.
+TransferVel1=[1.640184610732615e+04;3.380386628373996e+04;-5.279241938816727e+02]; 
+TransferVel2=[2.672992453413431e+04;1.895687745405791e+04;1.153260133910515e+03];
+
+
+TransferFinalPos1=InitialPosM; 
+TransferFinalPos2=InitialPosM2;
+
+
+dt=3600;                           
+N=1000000;
+
+%% plot
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+figure ('name','Interplanetary transfer')
+hold on
+axis equal
+grid on
+grid minor 
+
+xlabel('X(AU)','FontName','Times');
+ylabel('Y(AU)','FontName','Times');
+zlabel('Z(AU)','FontName','Times');
+
+%% This section fixes the plot depending on the chosen planets. 
+if planetdatadeparture.aAU>planetdataarrival.aAU
+    half=planetdatadeparture.aAU/2;
+    xlim([-planetdatadeparture.aAU-half planetdatadeparture.aAU+half])
+    ylim([-planetdatadeparture.aAU-half planetdatadeparture.aAU+half])
+    zlim([-1 1])
+
+elseif planetdataarrival.aAU>planetdatadeparture.aAU
+    half=planetdataarrival.aAU/2;
+    xlim([-planetdataarrival.aAU-half planetdataarrival.aAU+half])
+    ylim([-planetdataarrival.aAU-half planetdataarrival.aAU+half])
+    zlim([-1 1])
+end
+
+%% 
+legend('location','northeast','FontName','Times')
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+% plot sun
+plot3(0,0,0, 'hy', 'MarkerSize', 10,'DisplayName','Sun');
+planetdotsE=[TransferPos1,TransferPos2];
+planetdotsM=[TransferFinalPos1,TransferFinalPos2];
+
+plot3(planetdotsE(1,:)/units.AU,planetdotsE(2,:)/units.AU,planetdotsE(3,:)/units.AU, 'o','MarkerSize', 5,'color',planetdatadeparture.color,'DisplayName',planet1)
+
+plot3(planetdotsM(1,:)/units.AU,planetdotsM(2,:)/units.AU,planetdotsM(3,:)/units.AU, 'o','MarkerSize', 5,'color',planetdataarrival.color,'DisplayName',planet2)
+
+%Plot planets' orbits
+%planet1
+[posE]=positiontracer(InitialPosE, InitialVelE, dt, N, constant);
+h1=plot3(posE(:,1)/units.AU,posE(:,2)/units.AU,posE(:,3)/units.AU,'color','k','linestyle','REPLACE_WITH_DASH_DASH');
+%planet2
+[posM]=positiontracer(InitialPosM, InitialVelM, dt, N, constant);
+h2=plot3(posM(:,1)/units.AU,posM(:,2)/units.AU,posM(:,3)/units.AU,'color','k','linestyle','REPLACE_WITH_DASH_DASH');
+%plot transfer orbit. Mars 1
+[pos1]=positiontracerTRANS(TransferPos1, TransferVel1,TransferFinalPos1, dt, N, constant);
+plot3(pos1(:,1)/units.AU,pos1(:,2)/units.AU,pos1(:,3)/units.AU,'color','r','linestyle','REPLACE_WITH_DASH_DASH','DisplayName','Mars 1 & 2a')
+
+ %Mars 2b
+[pos2]=positiontracerTRANS(TransferPos2, TransferVel2,TransferFinalPos2, dt, N, constant);
+plot3(pos2(:,1)/units.AU,pos2(:,2)/units.AU,pos2(:,3)/units.AU,'-.','DisplayName','Perseverance (Mars 2020)')
+
+set(get(get(h1,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+set(get(get(h2,'Annotation'),'LegendInformation'),'IconDisplayStyle','off');
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+%% Functions
+%displays the planetary orbits. 
+
+function [pos]=positiontracer(InitialPos, InitialVel, dt, N, constant) 
+
+
+%Initial Conditions
+
+rx=InitialPos(1);
+ry=InitialPos(2);
+rz=InitialPos(3);                       %initial position.
+Vx=InitialVel(1);                       %Velocity in the x direction. m/s
+Vy=InitialVel(2);                       %Velocity in the y direction. m/s
+Vz=InitialVel(3);
+
+
+initialPosCheck=[rx ry rz];             %Saves a copy of the initial position.
+%%
+R = zeros(N,3);
+V = zeros(N,3);
+dvdt = zeros(N,3);
+t=zeros(N,1);
+
+
+Check=false;
+%Initial Conditions of vectors
+        R(1,:) =[rx ry rz];
+        V(1,:) = [Vx Vy Vz];
+        Sun = [0 0 0];
+
+%% Solution
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+ for i=1:N
+        
+        [G_dV] = getGdV(Sun,R(i,:),constant);
+        dvdt(i,:)=G_dV;
+     
+  if i<N
+      V(i+1,:)= V(i,:)+dvdt(i,:)*dt;
+      R(i+1,:)= R(i,:)+V(i+1,:)*dt;
+      t(i+1)=t(i)+dt;
+  end 
+  
+  if Check==true
+      if R(i,:)==initialPosCheck
+          R(i:N,:) = [];
+          break
+          
+      end
+  end
+  
+  Check=true;
+ end
+ pos=R;
+
+   
+end
+
+%displays the transfer orbits. 
+function [pos]=positiontracerTRANS(TransferPos, TransferVel,TransferFinalPos, dt, N, constant)
+
+%Initial Conditions
+rx=TransferPos(1);
+ry=TransferPos(2);
+rz=TransferPos(3);            %initial position.
+Vx=TransferVel(1);          %Velocity in the x direction. m/s
+Vy=TransferVel(2);            %Velocity in the y direction. m/s
+Vz=TransferVel(3);
+%%
+R = zeros(N,3);
+V = zeros(N,3);
+dvdt = zeros(N,3);
+t=zeros(N,1);
+%Initial Conditions of vectors
+        R(1,:) =[rx ry rz];
+        V(1,:) = [Vx Vy Vz];
+        Sun = [0 0 0];
+
+%% Solution
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+ for i=1:N
+        
+        [G_dV] = getGdV(Sun,R(i,:),constant);
+        dvdt(i,:)=G_dV;
+     
+  if i<N
+      V(i+1,:)= V(i,:)+dvdt(i,:)*dt;
+      R(i+1,:)= R(i,:)+V(i+1,:)*dt;
+      t(i+1)=t(i)+dt;
+  end
+       h=norm(R(i,:));
+       
+       if h>norm(TransferFinalPos)
+            R(i:N,:) = [];
+           break 
+       end
+ end
+ pos=R;
+
+
+end
+
+%Gravitational force due to the sun. 
+function [G_dV] = getGdV(Planet,Pos,constant)
+    
+    ToPlanet = (Planet-Pos);
+    G_unit = ToPlanet./norm(ToPlanet);
+    G_mag = constant.mu_sun/norm(Pos)^2;
+    G_dV = G_mag.*G_unit;
+    
+end
+
+%
+##### SOURCE END #####
+--></body></html>
