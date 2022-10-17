@@ -2,7 +2,7 @@
 
 This code does the orbital mechanics for the earth to Mars mission. 
 
-FOLDERS:
+FOLDERS: \n
 1.Orbital calcs: Has the saved figures for porkchop plots. 
 2. Patched Conics Solution - Fullsolar: The main file is called patchedconics. Just run it and follow the prompts. 
 This code was validated with other solvers and the perseverance 2022 mission. In general, say no to the question about specifying time. 
