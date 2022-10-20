@@ -1,12 +1,13 @@
-# Mars-and-back-2022
+# Solar system transfer orbit calculator 
 
-This code does the orbital mechanics for the earth to Mars mission. 
+This code does the orbital mechanics for mission between planets. (only validated for Earth to/from Mars and retrograde missions)
 
-FOLDERS: \n
-1.Orbital calcs: Has the saved figures for porkchop plots. 
+#folders:
+1.Orbital calcs: Has the saved figures for porkchop plots. Not that useful. 
+
 2. Patched Conics Solution - Fullsolar: The main file is called patchedconics. Just run it and follow the prompts. 
-This code was validated with other solvers and the perseverance 2022 mission. In general, say no to the question about specifying time. 
-Currently the orbital plotter only works for earth-mars (don't have time to fix for others). 
+This code was validated with other solvers and the perseverance 2022 mission. In general, say no to the question about specifying time unless you really want to. The orbital plotter may or may not work (still needs work). 
+
 3. PorkChop: The main codes are the ones that start with Porky. 
   for this code you specify the dates and dt. In the plotting part, you can change the limit for the countours and the resolution. For both the velocity contours and the TOF. 
   Right now I have it setup so that the return date is N months after than the launch. 
